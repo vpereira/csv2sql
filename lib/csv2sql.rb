@@ -143,11 +143,13 @@ class Csv2sql
   #
   # args[:values_filter] - proc, called with (values, line_number)
   # args[:value_filter] - proc, called with values, line_number, column_number
-  #
+  # args[:col_sep] - which column separator will be used. default ','
   def parse(args={})
+    csv_args = {:skip_blanks=>true,:col_sep=>","}
+    csv_args[:col_sep] = args[:col_sep] if args[:col_sep]
     args[:value_filter] ||= Csv2sql.method :default_value_filter
     i = 0
-    CSV.foreach(@filename) do |row|
+    CSV.foreach(@filename,csv_args) do |row|
       values = row
       #values_filter is for whole row
       #value_filter is for single value

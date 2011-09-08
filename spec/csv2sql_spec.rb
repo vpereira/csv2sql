@@ -24,4 +24,13 @@ describe Csv2sql do
     it { @csv.to_inserts.should_not be_nil }
     it { @csv.to_updates([nil,'balance'], :table=>'foobar').should_not be_nil }
   end
+  context "with utf-8 file" do
+    before do
+      @csv_file = File.join(File.dirname(__FILE__),"fixtures","ut.csv")
+      @csv = Csv2sql.new(@csv_file)
+    end
+    it { @csv.to_inserts({:col_sep=>';'}).should_not be_nil }
+    it { @csv.to_updates([nil,'tabelle'], :table=>'foobar',:col_sep=>';').should_not be_nil }
+
+  end
 end
