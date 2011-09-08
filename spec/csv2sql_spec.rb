@@ -18,7 +18,7 @@ describe Csv2sql do
   end
   context "with a multilinecells file" do 
     before do
-      @csv_file = File.join(File.dirname(__FILE__),"fixtures","gmclient.csv")
+      @csv_file = File.join(File.dirname(__FILE__),"fixtures","multilinecells.csv")
       @csv = Csv2sql.new(@csv_file)
     end
     it { @csv.to_inserts.should_not be_nil }
@@ -31,6 +31,18 @@ describe Csv2sql do
     end
     it { @csv.to_inserts({:col_sep=>';'}).should_not be_nil }
     it { @csv.to_updates([nil,'tabelle'], :table=>'foobar',:col_sep=>';').should_not be_nil }
+  end
 
+  context "numbers of row returned" do
+    before  do
+      @csv_file = File.join(File.dirname(__FILE__),"fixtures","multilinecells.csv")
+      @csv = Csv2sql.new(@csv_file)
+    end
+
+    it "should have 3 rows" do
+      r = @csv.to_inserts.split  /insert into/
+      r.size.should be_equal 3
+      #r.size.should be_equal 3
+    end
   end
 end
