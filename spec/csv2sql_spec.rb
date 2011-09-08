@@ -15,6 +15,13 @@ describe Csv2sql do
     it { @csv.should_not be_nil }
     it { @csv.to_inserts.should_not be_nil }
     it { @csv.to_updates([nil,'balance'], :table=>'foobar').should_not be_nil }
-
+  end
+  context "with a multilinecells file" do 
+    before do
+      @csv_file = File.join(File.dirname(__FILE__),"fixtures","gmclient.csv")
+      @csv = Csv2sql.new(@csv_file)
+    end
+    it { @csv.to_inserts.should_not be_nil }
+    it { @csv.to_updates([nil,'balance'], :table=>'foobar').should_not be_nil }
   end
 end

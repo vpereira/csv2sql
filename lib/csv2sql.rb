@@ -21,7 +21,6 @@
 
 #
 # UPDATE 
-#
 # ruby gem updated to use rspec and ruby 1.9.x
 require 'csv'
 require 'pathname'
