@@ -1,6 +1,51 @@
-= csv2sql
+= csv2sql -- convert comma-separated-values file to sql
 
-Description goes here.
+It was initially written by  Mirek Rusin <ruby@mirekrusin.com>
+
+I just ported it to ruby 1.9.X, I added rspec cases and yard support
+
+Csv2sql class goes deeper into conversion process of csv files, ie:
+
+  puts Csv2sql.new("test.csv").to_inserts(:bulk => true)
+
+outputs:
+
+  start tramsaction;
+  insert into test_csv values
+    (1, "test 1"),
+    (2, "test 2"),
+    (3, "test 3"),
+    (4, "test 4");
+  commit;
+
+or:
+
+  puts Csv2sql.new("account_balances.csv").to_updates([nil, 'balance'], :table => 'accounts')
+  
+outputs:
+  
+  start transaction;
+  update accounts set balance = "0" where id = "0345S";
+  update accounts set balance = "3301.37" where id = "0252S";
+  update accounts set balance = "11903.33" where id = "0345G";
+  update accounts set balance = "47028.32" where id = "0324G";
+  ...
+  commit;
+
+You can use optional arguments, ie:
+
+Csv2sql#to_inserts
+  :bulk - to get bulk inserts
+
+Csv2sql#to_updates:
+  :before
+  :after
+  :row_filter
+  ...
+
+For more details see api docs.
+
+
 
 == Contributing to csv2sql
  
